@@ -13,7 +13,7 @@ export const generateSignalPubKey = (pubKey: Uint8Array | Buffer) =>
 
 export const Curve = {
 	generateKeyPair: (): KeyPair => {
-		const { pubKey, privKey } = libsignal.curve.generateKeyPair()
+		const { pubKey, privKey } = libsignal.KeyHelper.generateIdentityKeyPair()
 		return {
 			private: Buffer.from(privKey),
 			// remove version byte
@@ -21,13 +21,13 @@ export const Curve = {
 		}
 	},
 	sharedKey: (privateKey: Uint8Array, publicKey: Uint8Array) => {
-		const shared = libsignal.curve.calculateAgreement(generateSignalPubKey(publicKey), privateKey)
+		const shared = libsignal.Curve.calculateAgreement(generateSignalPubKey(publicKey), privateKey)
 		return Buffer.from(shared)
 	},
-	sign: (privateKey: Uint8Array, buf: Uint8Array) => libsignal.curve.calculateSignature(privateKey, buf),
+	sign: (privateKey: Uint8Array, buf: Uint8Array) => libsignal.Curve.calculateSignature(privateKey, buf),
 	verify: (pubKey: Uint8Array, message: Uint8Array, signature: Uint8Array) => {
 		try {
-			libsignal.curve.verifySignature(generateSignalPubKey(pubKey), message, signature)
+			libsignal.Curve.verifySignature(generateSignalPubKey(pubKey), message, signature)
 			return true
 		} catch (error) {
 			return false

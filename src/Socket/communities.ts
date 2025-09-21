@@ -1,4 +1,4 @@
-import { proto } from '../../WAProto/index'
+import { proto } from '../../WAProto/index.js'
 import {
 	type GroupMetadata,
 	type GroupParticipant,
